@@ -55,12 +55,31 @@ jobs:
       - eb/setup
       - aws-cli/setup
       - checkout
-      - run:
-          name: Deploy App
-          # TODO: Install, build, deploy in both apps
+      - run: 
+          name: Front-End install
           command: |
-            echo "# TODO: Install, build, deploy in both apps"
-            
+            npm run frontend:install
+      - run:
+          name: Front-End Build
+          command: |
+            npm run frontend:build
+      - run:
+          name: Front-End Deploy
+          command: |
+            cd udagram/udagram-frontend
+            aws s3 cp --recursive --acl public-read ./www s3://frontendudacity1242/
+      - run:
+          name: Back-End Install
+          command: |
+            npm run backend:install
+      - run:
+          name: Back-End Build
+          command: |
+            npm run backend:build
+      - run:
+          name: Back-End Deploy
+          command: |
+            npm run backend:deploy
 workflows:
   udagram:
     jobs:
